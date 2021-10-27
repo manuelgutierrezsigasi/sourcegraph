@@ -1692,7 +1692,7 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 
 	if featureflag.FromContext(ctx).GetBoolOr("cc_commit_search", false) {
 		addCommitSearch := func(diff bool) {
-			j, err := commit.NewSearchJob(args.Query, args.Repos, diff, int(args.PatternInfo.FileMatchLimit))
+			j, err := commit.NewSearchJob(args.Query, diff, int(args.PatternInfo.FileMatchLimit))
 			if err != nil {
 				agg.Error(err)
 				return
@@ -1753,7 +1753,7 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 		wg.Add(1)
 		goroutine.Go(func() {
 			defer wg.Done()
-			_ = agg.DoSearch(ctx, job, args.Mode)
+			_ = agg.DoSearch(ctx, job, args.Repos, args.Mode)
 		})
 	}
 
