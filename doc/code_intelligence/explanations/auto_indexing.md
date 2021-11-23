@@ -1,5 +1,16 @@
 # Auto-indexing
 
+<style>
+img.screenshot {
+  display: block;
+  margin: 1em auto;
+  max-width: 600px;
+  margin-bottom: 0.5em;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+}
+</style>
+
 <aside class="experimental">
 <p><span class="badge badge-experimental">Experimental</span> This feature is available as an experimental feature in Sourcegraph 3.33 or later. As long as this feature is marked as experimental, instance and deployment requirements, behavior, and performance profiles are subject to change in the future without notice.</p>
 
@@ -18,3 +29,9 @@ For now here's some documentation we _do_ have:
 - [Configure auto-indexing](../how-to/configure_auto_indexing.md)
 - [Auto-indexing inference](auto_indexing_inference.md)
 - [Auto-indexing configuration](../references/auto_indexing_configuration.md)
+
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/list.png" class="screenshot" alt="TODO">
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/processing.png" class="screenshot" alt="TODO">
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/processing-detail.png" class="screenshot" alt="TODO">
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/completed.png" class="screenshot" alt="TODO">
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/associated-upload.png" class="screenshot" alt="TODO">
