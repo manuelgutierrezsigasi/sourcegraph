@@ -103,11 +103,6 @@ digraph architecture {
                     fillcolor="#e2a8fd"
                     URL="https://github.com/sourcegraph/sourcegraph/tree/master/cmd/searcher"
                 ]
-                query_runner [
-                    label="query runner"
-                    fillcolor="#aaffff"
-                    URL="https://github.com/sourcegraph/sourcegraph/tree/master/cmd/query-runner"
-                ]
             }
 
             subgraph cluster_code_intelligence {
