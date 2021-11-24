@@ -14,6 +14,6 @@ RUN apk update && apk add --no-cache \
     tini
 
 USER sourcegraph
-EXPOSE 3189
+# EXPOSE 3189
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/migrator"]
 COPY migrator /usr/local/bin/
