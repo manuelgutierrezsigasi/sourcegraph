@@ -86,7 +86,6 @@ func (s *savedSearchStore) ListAll(ctx context.Context) (savedSearches []api.Sav
 		query,
 		user_id,
 		org_id,
-		slack_webhook_url FROM saved_searches
 	`)
 	rows, err := s.Query(ctx, q)
 	if err != nil {
@@ -101,7 +100,7 @@ func (s *savedSearchStore) ListAll(ctx context.Context) (savedSearches []api.Sav
 			&sq.Config.Query,
 			&sq.Config.UserID,
 			&sq.Config.OrgID,
-			&sq.Config.SlackWebhookURL); err != nil {
+		); err != nil {
 			return nil, errors.Wrap(err, "Scan")
 		}
 		sq.Spec.Key = sq.Config.Key
@@ -128,15 +127,14 @@ func (s *savedSearchStore) GetByID(ctx context.Context, id int32) (*api.SavedQue
 		description,
 		query,
 		user_id,
-		org_id,
-		slack_webhook_url
+		org_id
 		FROM saved_searches WHERE id=$1`, id).Scan(
 		&sq.Config.Key,
 		&sq.Config.Description,
 		&sq.Config.Query,
 		&sq.Config.UserID,
 		&sq.Config.OrgID,
-		&sq.Config.SlackWebhookURL)
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -181,8 +179,7 @@ func (s *savedSearchStore) ListSavedSearchesByUserID(ctx context.Context, userID
 		description,
 		query,
 		user_id,
-		org_id,
-		slack_webhook_url
+		org_id
 		FROM saved_searches %v`, conds)
 
 	rows, err := s.Query(ctx, query)
@@ -191,7 +188,13 @@ func (s *savedSearchStore) ListSavedSearchesByUserID(ctx context.Context, userID
 	}
 	for rows.Next() {
 		var ss types.SavedSearch
-		if err := rows.Scan(&ss.ID, &ss.Description, &ss.Query, &ss.UserID, &ss.OrgID, &ss.SlackWebhookURL); err != nil {
+		if err := rows.Scan(
+			&ss.ID,
+			&ss.Description,
+			&ss.Query,
+			&ss.UserID,
+			&ss.OrgID,
+		); err != nil {
 			return nil, errors.Wrap(err, "Scan(2)")
 		}
 		savedSearches = append(savedSearches, &ss)
@@ -214,8 +217,7 @@ func (s *savedSearchStore) ListSavedSearchesByOrgID(ctx context.Context, orgID i
 		description,
 		query,
 		user_id,
-		org_id,
-		slack_webhook_url
+		org_id
 		FROM saved_searches %v`, conds)
 
 	rows, err := s.Query(ctx, query)
@@ -224,7 +226,13 @@ func (s *savedSearchStore) ListSavedSearchesByOrgID(ctx context.Context, orgID i
 	}
 	for rows.Next() {
 		var ss types.SavedSearch
-		if err := rows.Scan(&ss.ID, &ss.Description, &ss.Query, &ss.UserID, &ss.OrgID, &ss.SlackWebhookURL); err != nil {
+		if err := rows.Scan(
+			&ss.ID,
+			&ss.Description,
+			&ss.Query,
+			&ss.UserID,
+			&ss.OrgID,
+		); err != nil {
 			return nil, errors.Wrap(err, "Scan")
 		}
 
@@ -261,8 +269,10 @@ func (s *savedSearchStore) Create(ctx context.Context, newSavedSearch *types.Sav
 			description,
 			query,
 			user_id,
-			org_id
-		) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
+			org_id,
+			notify_owner,
+			notify_slack
+		) VALUES($1, $2, $3, $4, false, false) RETURNING id`,
 		newSavedSearch.Description,
 		savedQuery.Query,
 		newSavedSearch.UserID,
@@ -287,11 +297,10 @@ func (s *savedSearchStore) Update(ctx context.Context, savedSearch *types.SavedS
 	}()
 
 	savedQuery = &types.SavedSearch{
-		Description:     savedSearch.Description,
-		Query:           savedSearch.Query,
-		UserID:          savedSearch.UserID,
-		OrgID:           savedSearch.OrgID,
-		SlackWebhookURL: savedSearch.SlackWebhookURL,
+		Description: savedSearch.Description,
+		Query:       savedSearch.Query,
+		UserID:      savedSearch.UserID,
+		OrgID:       savedSearch.OrgID,
 	}
 
 	fieldUpdates := []*sqlf.Query{
@@ -300,7 +309,6 @@ func (s *savedSearchStore) Update(ctx context.Context, savedSearch *types.SavedS
 		sqlf.Sprintf("query=%s", savedSearch.Query),
 		sqlf.Sprintf("user_id=%v", savedSearch.UserID),
 		sqlf.Sprintf("org_id=%v", savedSearch.OrgID),
-		sqlf.Sprintf("slack_webhook_url=%v", savedSearch.SlackWebhookURL),
 	}
 
 	updateQuery := sqlf.Sprintf(`UPDATE saved_searches SET %s WHERE ID=%v RETURNING id`, sqlf.Join(fieldUpdates, ", "), savedSearch.ID)

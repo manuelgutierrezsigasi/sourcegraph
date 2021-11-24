@@ -278,15 +278,12 @@ const savedSearchFragment = gql`
     fragment SavedSearchFields on SavedSearch {
         id
         description
-        notify
-        notifySlack
         query
         namespace {
             __typename
             id
             namespaceName
         }
-        slackWebhookURL
     }
 `
 
@@ -317,9 +314,6 @@ export function fetchSavedSearch(id: Scalars['ID']): Observable<GQL.ISavedSearch
                         id
                         description
                         query
-                        notify
-                        notifySlack
-                        slackWebhookURL
                         namespace {
                             id
                         }
@@ -337,8 +331,6 @@ export function fetchSavedSearch(id: Scalars['ID']): Observable<GQL.ISavedSearch
 export function createSavedSearch(
     description: string,
     query: string,
-    notify: boolean,
-    notifySlack: boolean,
     userId: Scalars['ID'] | null,
     orgId: Scalars['ID'] | null
 ): Observable<void> {
@@ -347,16 +339,12 @@ export function createSavedSearch(
             mutation CreateSavedSearch(
                 $description: String!
                 $query: String!
-                $notifyOwner: Boolean!
-                $notifySlack: Boolean!
                 $userID: ID
                 $orgID: ID
             ) {
                 createSavedSearch(
                     description: $description
                     query: $query
-                    notifyOwner: $notifyOwner
-                    notifySlack: $notifySlack
                     userID: $userID
                     orgID: $orgID
                 ) {
@@ -368,8 +356,6 @@ export function createSavedSearch(
         {
             description,
             query,
-            notifyOwner: notify,
-            notifySlack,
             userID: userId,
             orgID: orgId,
         }
@@ -383,8 +369,6 @@ export function updateSavedSearch(
     id: Scalars['ID'],
     description: string,
     query: string,
-    notify: boolean,
-    notifySlack: boolean,
     userId: Scalars['ID'] | null,
     orgId: Scalars['ID'] | null
 ): Observable<void> {
@@ -394,8 +378,6 @@ export function updateSavedSearch(
                 $id: ID!
                 $description: String!
                 $query: String!
-                $notifyOwner: Boolean!
-                $notifySlack: Boolean!
                 $userID: ID
                 $orgID: ID
             ) {
@@ -403,8 +385,6 @@ export function updateSavedSearch(
                     id: $id
                     description: $description
                     query: $query
-                    notifyOwner: $notifyOwner
-                    notifySlack: $notifySlack
                     userID: $userID
                     orgID: $orgID
                 ) {
@@ -417,8 +397,6 @@ export function updateSavedSearch(
             id,
             description,
             query,
-            notifyOwner: notify,
-            notifySlack,
             userID: userId,
             orgID: orgId,
         }

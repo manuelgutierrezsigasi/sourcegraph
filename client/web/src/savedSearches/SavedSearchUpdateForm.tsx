@@ -76,8 +76,6 @@ export class SavedSearchUpdateForm extends React.Component<Props, State> {
                                 input.id,
                                 input.description,
                                 input.query,
-                                input.notify,
-                                input.notifySlack,
                                 this.props.namespace.__typename === 'User' ? this.props.namespace.id : null,
                                 this.props.namespace.__typename === 'Org' ? this.props.namespace.id : null
                             ).pipe(
@@ -123,9 +121,6 @@ export class SavedSearchUpdateForm extends React.Component<Props, State> {
                             id: savedSearch.id,
                             description: savedSearch.description,
                             query: savedSearch.query,
-                            notify: savedSearch.notify,
-                            notifySlack: savedSearch.notifySlack,
-                            slackWebhookURL: savedSearch.slackWebhookURL,
                         }}
                         loading={this.state.updatedOrError === LOADING}
                         onSubmit={(fields: Pick<SavedQueryFields, Exclude<keyof SavedQueryFields, 'id'>>): void =>

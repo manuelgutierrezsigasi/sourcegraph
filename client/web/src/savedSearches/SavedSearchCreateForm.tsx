@@ -43,8 +43,6 @@ export class SavedSearchCreateForm extends React.Component<Props, State> {
                             createSavedSearch(
                                 fields.description,
                                 fields.query,
-                                fields.notify,
-                                fields.notifySlack,
                                 this.props.namespace.__typename === 'User' ? this.props.namespace.id : null,
                                 this.props.namespace.__typename === 'Org' ? this.props.namespace.id : null
                             ).pipe(
