@@ -13,9 +13,12 @@ img.screenshot {
 
 ![Upload state diagram](./diagrams/upload-states.svg)
 
-<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/src-lsif-upload.gif" class="screenshot" alt="TODO">
+- [How to upload](../how-to/index_other_languages#4-upload-lsif-data) via [Sourcegraph CLI ](https://github.com/sourcegraph/src-cli)
+
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.33/repository-page.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/processing.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/completed.png" class="screenshot" alt="TODO">
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/site-admin-list.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/list.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/list-states.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/uploads/list-stale-commit-graph.png" class="screenshot" alt="TODO">
