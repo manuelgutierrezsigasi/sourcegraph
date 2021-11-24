@@ -462,18 +462,6 @@ type Mutation {
     """
     logEvents(events: [Event!]): EmptyResponse
     """
-    Sends a test notification for the saved search. Be careful: this will send a notifcation (email and other
-    types of notifications, if configured) to all subscribers of the saved search, which could be bothersome.
-
-    Only subscribers to this saved search may perform this action.
-    """
-    sendSavedSearchTestNotification(
-        """
-        ID of the saved search.
-        """
-        id: ID!
-    ): EmptyResponse
-    """
     All mutations that update settings (global, organization, and user settings) are under this field.
 
     Only the settings subject whose settings are being mutated (and site admins) may perform this mutation.
@@ -552,8 +540,6 @@ type Mutation {
     createSavedSearch(
         description: String!
         query: String!
-        notifyOwner: Boolean!
-        notifySlack: Boolean!
         orgID: ID
         userID: ID
     ): SavedSearch!
@@ -564,8 +550,6 @@ type Mutation {
         id: ID!
         description: String!
         query: String!
-        notifyOwner: Boolean!
-        notifySlack: Boolean!
         orgID: ID
         userID: ID
     ): SavedSearch!
@@ -2082,22 +2066,9 @@ type SavedSearch implements Node {
     """
     query: String!
     """
-    Whether or not to notify the owner of the saved search via email. This owner is either
-    a single user, or every member of an organization that owns the saved search.
-    """
-    notify: Boolean!
-    """
-    Whether or not to notify on Slack.
-    """
-    notifySlack: Boolean!
-    """
     The user or org that owns this saved search.
     """
     namespace: Namespace!
-    """
-    The Slack webhook URL associated with this saved search, if any.
-    """
-    slackWebhookURL: String
 }
 
 """

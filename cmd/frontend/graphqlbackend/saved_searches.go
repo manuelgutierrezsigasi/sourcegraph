@@ -58,14 +58,11 @@ func (r *schemaResolver) savedSearchByID(ctx context.Context, id graphql.ID) (*s
 	savedSearch := &savedSearchResolver{
 		db: r.db,
 		s: types.SavedSearch{
-			ID:              intID,
-			Description:     ss.Config.Description,
-			Query:           ss.Config.Query,
-			Notify:          ss.Config.Notify,
-			NotifySlack:     ss.Config.NotifySlack,
-			UserID:          ss.Config.UserID,
-			OrgID:           ss.Config.OrgID,
-			SlackWebhookURL: ss.Config.SlackWebhookURL,
+			ID:          intID,
+			Description: ss.Config.Description,
+			Query:       ss.Config.Query,
+			UserID:      ss.Config.UserID,
+			OrgID:       ss.Config.OrgID,
 		},
 	}
 	return savedSearch, nil
@@ -73,14 +70,6 @@ func (r *schemaResolver) savedSearchByID(ctx context.Context, id graphql.ID) (*s
 
 func (r savedSearchResolver) ID() graphql.ID {
 	return marshalSavedSearchID(r.s.ID)
-}
-
-func (r savedSearchResolver) Notify() bool {
-	return r.s.Notify
-}
-
-func (r savedSearchResolver) NotifySlack() bool {
-	return r.s.NotifySlack
 }
 
 func (r savedSearchResolver) Description() string { return r.s.Description }
@@ -104,8 +93,6 @@ func (r savedSearchResolver) Namespace(ctx context.Context) (*NamespaceResolver,
 	}
 	return nil, nil
 }
-
-func (r savedSearchResolver) SlackWebhookURL() *string { return r.s.SlackWebhookURL }
 
 func (r *schemaResolver) toSavedSearchResolver(entry types.SavedSearch) *savedSearchResolver {
 	return &savedSearchResolver{db: r.db, s: entry}
@@ -139,8 +126,6 @@ func (r *schemaResolver) SendSavedSearchTestNotification(ctx context.Context, ar
 func (r *schemaResolver) CreateSavedSearch(ctx context.Context, args *struct {
 	Description string
 	Query       string
-	NotifyOwner bool
-	NotifySlack bool
 	OrgID       *graphql.ID
 	UserID      *graphql.ID
 }) (*savedSearchResolver, error) {
@@ -175,8 +160,6 @@ func (r *schemaResolver) CreateSavedSearch(ctx context.Context, args *struct {
 	ss, err := r.db.SavedSearches().Create(ctx, &types.SavedSearch{
 		Description: args.Description,
 		Query:       args.Query,
-		Notify:      args.NotifyOwner,
-		NotifySlack: args.NotifySlack,
 		UserID:      userID,
 		OrgID:       orgID,
 	})
@@ -191,8 +174,6 @@ func (r *schemaResolver) UpdateSavedSearch(ctx context.Context, args *struct {
 	ID          graphql.ID
 	Description string
 	Query       string
-	NotifyOwner bool
-	NotifySlack bool
 	OrgID       *graphql.ID
 	UserID      *graphql.ID
 }) (*savedSearchResolver, error) {
@@ -233,8 +214,6 @@ func (r *schemaResolver) UpdateSavedSearch(ctx context.Context, args *struct {
 		ID:          id,
 		Description: args.Description,
 		Query:       args.Query,
-		Notify:      args.NotifyOwner,
-		NotifySlack: args.NotifySlack,
 		UserID:      userID,
 		OrgID:       orgID,
 	})
