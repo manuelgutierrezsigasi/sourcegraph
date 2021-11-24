@@ -13,15 +13,13 @@ import (
 
 type Store struct {
 	*basestore.Store
-	migrations      *MigrationSpecs
 	migrationsTable string
 	operations      *operations
 }
 
-func NewWithDB(db dbutil.DB, migrationSpecs *MigrationSpecs, migrationsTable string, observationContext *observation.Context) *Store {
+func NewWithDB(db dbutil.DB, migrationsTable string, observationContext *observation.Context) *Store {
 	return &Store{
 		Store:           basestore.NewWithDB(db, sql.TxOptions{}),
-		migrations:      migrationSpecs,
 		migrationsTable: migrationsTable,
 		operations:      newOperations(observationContext),
 	}
@@ -30,7 +28,6 @@ func NewWithDB(db dbutil.DB, migrationSpecs *MigrationSpecs, migrationsTable str
 func (s *Store) With(other basestore.ShareableStore) *Store {
 	return &Store{
 		Store:           s.Store.With(other),
-		migrations:      s.migrations,
 		migrationsTable: s.migrationsTable,
 		operations:      s.operations,
 	}
@@ -44,7 +41,6 @@ func (s *Store) Transact(ctx context.Context) (*Store, error) {
 
 	return &Store{
 		Store:           txBase,
-		migrations:      s.migrations,
 		migrationsTable: s.migrationsTable,
 		operations:      s.operations,
 	}, nil
