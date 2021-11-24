@@ -30,6 +30,7 @@ For now here's some documentation we _do_ have:
 - [Auto-indexing inference](auto_indexing_inference.md)
 - [Auto-indexing configuration](../references/auto_indexing_configuration.md)
 
+<img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/site-admin-list.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/list.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/processing.png" class="screenshot" alt="TODO">
 <img src="https://storage.googleapis.com/sourcegraph-assets/docs/images/code-intelligence/sg-3.34/indexes/processing-detail.png" class="screenshot" alt="TODO">
