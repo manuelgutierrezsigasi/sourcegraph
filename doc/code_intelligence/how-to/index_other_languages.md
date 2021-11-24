@@ -1,6 +1,6 @@
 <style>
 img.terminal-screenshot {
-  max-width: 100%;
+  max-width: 800px;
 }
 </style>
 
@@ -14,7 +14,7 @@ The general steps for enabling precise code intelligence are as follows:
 
 ### 1. Install Sourcegraph CLI
 
-The [Sourcegraph CLI (`src`)](https://github.com/sourcegraph/src-cli) is used for uploading LSIF data to your Sourcegraph instance (replace `linux` with `darwin` for macOS):
+The [Sourcegraph CLI](../../src-cli) is used for uploading LSIF data to your Sourcegraph instance (replace `linux` with `darwin` for macOS):
 
 ```
 $ curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 -o /usr/local/bin/src
