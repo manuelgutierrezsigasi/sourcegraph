@@ -82,6 +82,7 @@ var DeploySourcegraphDockerImages = []string{
 	"symbols",
 	"syntax-highlighter",
 	"worker",
+	"migrator",
 }
 
 // CandidateImageTag provides the tag for a candidate image built for this Buildkite run.
