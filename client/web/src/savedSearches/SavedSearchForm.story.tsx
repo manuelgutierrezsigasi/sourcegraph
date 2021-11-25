@@ -60,4 +60,3 @@ add('existing saved search', () => (
         )}
     </WebStory>
 ))
-

@@ -537,22 +537,11 @@ type Mutation {
     """
     Creates a saved search.
     """
-    createSavedSearch(
-        description: String!
-        query: String!
-        orgID: ID
-        userID: ID
-    ): SavedSearch!
+    createSavedSearch(description: String!, query: String!, orgID: ID, userID: ID): SavedSearch!
     """
     Updates a saved search
     """
-    updateSavedSearch(
-        id: ID!
-        description: String!
-        query: String!
-        orgID: ID
-        userID: ID
-    ): SavedSearch!
+    updateSavedSearch(id: ID!, description: String!, query: String!, orgID: ID, userID: ID): SavedSearch!
     """
     Deletes a saved search
     """

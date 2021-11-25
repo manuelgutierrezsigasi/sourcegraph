@@ -110,15 +110,15 @@ export const SavedSearchForm: React.FunctionComponent<SavedSearchFormProps> = pr
 
                 {props.error && !props.loading && <ErrorAlert className="mb-3" error={props.error} />}
 
-				<Container className="d-flex p-3 align-items-start">
-					<Badge status="new" className="mr-3">
-						New
-					</Badge>
-					<span>
-						Watch for changes to your code and trigger email notifications, webhooks, and more with{' '}
-						<Link to="/code-monitoring">code monitoring →</Link>
-					</span>
-				</Container>
+                <Container className="d-flex p-3 align-items-start">
+                    <Badge status="new" className="mr-3">
+                        New
+                    </Badge>
+                    <span>
+                        Watch for changes to your code and trigger email notifications, webhooks, and more with{' '}
+                        <Link to="/code-monitoring">code monitoring →</Link>
+                    </span>
+                </Container>
             </Form>
         </div>
     )

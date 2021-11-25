@@ -4,9 +4,8 @@ package authz
 
 import (
 	"context"
-	"sync"
-
 	api "github.com/sourcegraph/sourcegraph/internal/api"
+	"sync"
 )
 
 // MockSubRepoPermissionsGetter is a mock implementation of the

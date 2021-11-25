@@ -336,18 +336,8 @@ export function createSavedSearch(
 ): Observable<void> {
     return requestGraphQL<CreateSavedSearchResult, CreateSavedSearchVariables>(
         gql`
-            mutation CreateSavedSearch(
-                $description: String!
-                $query: String!
-                $userID: ID
-                $orgID: ID
-            ) {
-                createSavedSearch(
-                    description: $description
-                    query: $query
-                    userID: $userID
-                    orgID: $orgID
-                ) {
+            mutation CreateSavedSearch($description: String!, $query: String!, $userID: ID, $orgID: ID) {
+                createSavedSearch(description: $description, query: $query, userID: $userID, orgID: $orgID) {
                     ...SavedSearchFields
                 }
             }
@@ -374,20 +364,8 @@ export function updateSavedSearch(
 ): Observable<void> {
     return requestGraphQL<UpdateSavedSearchResult, UpdateSavedSearchVariables>(
         gql`
-            mutation UpdateSavedSearch(
-                $id: ID!
-                $description: String!
-                $query: String!
-                $userID: ID
-                $orgID: ID
-            ) {
-                updateSavedSearch(
-                    id: $id
-                    description: $description
-                    query: $query
-                    userID: $userID
-                    orgID: $orgID
-                ) {
+            mutation UpdateSavedSearch($id: ID!, $description: String!, $query: String!, $userID: ID, $orgID: ID) {
+                updateSavedSearch(id: $id, description: $description, query: $query, userID: $userID, orgID: $orgID) {
                     ...SavedSearchFields
                 }
             }
