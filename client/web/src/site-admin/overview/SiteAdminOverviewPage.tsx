@@ -43,6 +43,33 @@ interface Props extends ActivationProps, ThemeProps {
     _fetchWeeklyActiveUsers?: () => Observable<GQL.ISiteUsageStatistics>
 }
 
+const OVERVIEW_QUERY = `
+    query Overview {
+        repositories {
+            totalCount(precise: true)
+        }
+        repositoryStats {
+            gitDirBytes
+            indexedLinesCount
+        }
+        users {
+            totalCount
+        }
+        ${
+            window.context.sourcegraphDotComMode
+                ? ''
+                : `
+        organizations {
+            totalCount
+        }`
+        }
+        surveyResponses {
+            totalCount
+            averageScore
+        }
+    }
+`
+
 const fetchOverview = (): Observable<{
     repositories: number | null
     repositoryStats: {
@@ -56,27 +83,11 @@ const fetchOverview = (): Observable<{
         averageScore: number
     }
 }> =>
-    queryGraphQL(gql`
-        query Overview {
-            repositories {
-                totalCount(precise: true)
-            }
-            repositoryStats {
-                gitDirBytes
-                indexedLinesCount
-            }
-            users {
-                totalCount
-            }
-            organizations {
-                totalCount
-            }
-            surveyResponses {
-                totalCount
-                averageScore
-            }
-        }
-    `).pipe(
+    queryGraphQL(
+        gql`
+            ${OVERVIEW_QUERY}
+        `
+    ).pipe(
         map(dataOrThrowErrors),
         map(data => ({
             repositories: data.repositories.totalCount,
