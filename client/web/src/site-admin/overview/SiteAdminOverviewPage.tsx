@@ -43,7 +43,20 @@ interface Props extends ActivationProps, ThemeProps {
     _fetchWeeklyActiveUsers?: () => Observable<GQL.ISiteUsageStatistics>
 }
 
-const OVERVIEW_QUERY = `
+const fetchOverview = (): Observable<{
+    repositories: number | null
+    repositoryStats: {
+        gitDirBytes: Scalars['BigInt']
+        indexedLinesCount: Scalars['BigInt']
+    }
+    users: number
+    orgs: number
+    surveyResponses: {
+        totalCount: number
+        averageScore: number
+    }
+}> => {
+    const OVERVIEW_QUERY = `
     query Overview {
         repositories {
             totalCount(precise: true)
@@ -67,23 +80,8 @@ const OVERVIEW_QUERY = `
             totalCount
             averageScore
         }
-    }
-`
-
-const fetchOverview = (): Observable<{
-    repositories: number | null
-    repositoryStats: {
-        gitDirBytes: Scalars['BigInt']
-        indexedLinesCount: Scalars['BigInt']
-    }
-    users: number
-    orgs: number
-    surveyResponses: {
-        totalCount: number
-        averageScore: number
-    }
-}> =>
-    queryGraphQL(
+    }`
+    return queryGraphQL(
         gql`
             ${OVERVIEW_QUERY}
         `
@@ -97,6 +95,7 @@ const fetchOverview = (): Observable<{
             surveyResponses: data.surveyResponses,
         }))
     )
+}
 
 const fetchWeeklyActiveUsers = (): Observable<GQL.ISiteUsageStatistics> =>
     queryGraphQL(gql`

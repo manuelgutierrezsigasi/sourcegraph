@@ -11,6 +11,10 @@ import { PageTitle } from '../../components/PageTitle'
 import { SiteAdminOverviewPage } from './SiteAdminOverviewPage'
 
 describe('SiteAdminOverviewPage', () => {
+    beforeAll(() => {
+        window.context = { sourcegraphDotComMode: false } as any
+    })
+
     afterEach(() => {
         PageTitle.titleSet = false
     })
