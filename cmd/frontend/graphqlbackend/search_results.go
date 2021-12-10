@@ -520,7 +520,6 @@ func (r *searchResolver) toRepoOptions(q query.Q, opts resolveRepositoriesOpts) 
 		Visibility:        visibility,
 		CommitAfter:       commitAfter,
 		Query:             q,
-		Ranked:            true,
 		Limit:             opts.limit,
 		CacheLookup:       CacheLookup,
 	}
@@ -644,6 +643,7 @@ func (r *searchResolver) toSearchInputs(q query.Q) (*search.TextParameters, []ru
 		// generate jobs that run searcher, but it is conditional on
 		// whether global zoekt search will run (value true).
 		searcherOnly := args.Mode == search.SearcherOnly || (globalSearch && !envvar.SourcegraphDotComMode())
+
 		if args.ResultTypes.Has(result.TypeFile | result.TypePath) {
 			if !skipUnindexed {
 				typ := search.TextRequest
@@ -1678,6 +1678,7 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 		}
 	}
 
+<<<<<<< HEAD
 	resolved, err := r.resolveRepositories(ctx, args.RepoOptions)
 	if err != nil {
 		if alert, err := errorToAlert(err); alert != nil {
@@ -1711,6 +1712,8 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 	agg.Send(streaming.SearchEvent{Stats: streaming.Stats{Repos: resolved.RepoSet}})
 	tr.LazyPrintf("sending first stats (repos %d) - done", len(resolved.RepoSet))
 
+=======
+>>>>>>> 01c7384da9 (search: paginated repository resolution (#27093))
 	{
 		wg := waitGroup(true)
 		wg.Add(1)
@@ -1736,11 +1739,9 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 	}
 
 	if args.ResultTypes.Has(result.TypeRepo) {
-		wg := waitGroup(true)
-		wg.Add(1)
-		goroutine.Go(func() {
-			defer wg.Done()
-			_ = agg.DoRepoSearch(ctx, args, int32(limit))
+		jobs = append(jobs, &run.RepoSearch{
+			Args:  args,
+			Limit: limit,
 		})
 	}
 
@@ -1784,7 +1785,6 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 				defer wg.Done()
 				_ = agg.DoCommitSearch(ctx, args)
 			})
-
 		}
 	}
 
@@ -1796,6 +1796,8 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 			return waitGroup(args.ResultTypes.Without(result.TypeCommit) == 0)
 		case "Symbol":
 			return waitGroup(args.ResultTypes.Without(result.TypeSymbol) == 0)
+		case "Repo":
+			return waitGroup(true)
 		case "Text":
 			return waitGroup(true)
 		case "Structural":
@@ -1805,6 +1807,12 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 		}
 	}
 
+	repos := &searchrepos.Resolver{
+		Opts:   args.RepoOptions,
+		DB:     r.db,
+		Stream: agg,
+	}
+
 	// Start all specific search jobs, if any.
 	for _, job := range jobs {
 		job := job
@@ -1812,7 +1820,7 @@ func (r *searchResolver) doResults(ctx context.Context, args *search.TextParamet
 		wg.Add(1)
 		goroutine.Go(func() {
 			defer wg.Done()
-			_ = agg.DoSearch(ctx, job, args.Repos, args.Mode)
+			_ = agg.DoSearch(ctx, job, repos, args.Mode)
 		})
 	}
 
@@ -1847,8 +1855,9 @@ func (r *searchResolver) toSearchResults(ctx context.Context, agg *run.Aggregato
 	}
 
 	ao := alertObserver{
-		Inputs:     r.SearchInputs,
-		hasResults: matchCount > 0,
+		searchResolver: r,
+		Inputs:         r.SearchInputs,
+		hasResults:     matchCount > 0,
 	}
 	for _, err := range aggErrs.Errors {
 		ao.Error(ctx, err)
